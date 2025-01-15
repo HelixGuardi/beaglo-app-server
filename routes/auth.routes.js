@@ -2,6 +2,7 @@ const router = require("express").Router();
 
 const User = require("../models/User.model")
 const bcryptjs = require("bcryptjs")
+const jwt = require("jsonwebtoken")
 
 // POST "/api/auth/signup" => registrar el usuario
 router.post("/signup", async(req, res, next) => {
@@ -96,7 +97,21 @@ router.post("/login", async (req, res, next) => {
         } 
 
         // HASTA AQUI YA HEMOS AUTENTICADO AL USUARIO🧑🏻‍💻🎉
-        res.send("todo bien")
+        // A partir de este punto, le vamos a entregar al usuario su llave virtual🔐
+
+        const payload = {
+            _id: foundUser._id,
+            email: foundUser.email
+        } // El payload es toda información estatica que identifica al usuario
+
+        const tokenConfig = {
+            algorithm: "HS256",
+            expiresIn: "7d"
+        }
+
+        const authToken = jwt.sign(payload, process.env.TOKEN_SECRET, tokenConfig)
+
+        res.status(202).json({authToken: authToken})
 
     } catch (error) {
         next(error)
