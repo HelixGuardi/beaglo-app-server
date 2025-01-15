@@ -37,13 +37,19 @@ router.post("/signup", async(req, res, next) => {
         return // detener la ejecución de la ruta
     }
 
-        // verificar que el email sea unico //! PENDIENTE
-
-
-
-
+    
+    
+    
+    
     //* crear el usuario
     try {
+
+        // verificar que el email sea unico
+        const foundUser = await User.findOne( { email: email } )
+        if (foundUser !== null) {
+            res.status(400).json({errorMessage: "Ya existe un usuario con ese correo electronico"})
+            return // detener la ejecución de la ruta
+        }
 
         // cifrar la contraseña
         const encryptedPassword = await bcryptjs.hash(password, 12)
@@ -56,7 +62,7 @@ router.post("/signup", async(req, res, next) => {
             password: encryptedPassword,
         })
         res.sendStatus(201);
-
+ 
     } catch (error) {
         next(error)
     }
