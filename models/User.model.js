@@ -1,18 +1,41 @@
-const { Schema, model } = require("mongoose");
+const mongoose = require("mongoose")
 
 // TODO: Please make sure you edit the User model to whatever makes sense in this case
-const userSchema = new Schema(
+const userSchema = new mongoose.Schema(
   {
+    name: {
+      type: String,
+      required: [true, 'Name is required.'],
+      trim: true
+    },
+    surname: {
+      type: String,
+      required: [true, 'Surname is required.'],
+      trim: true
+    },
+    dateOfBirth: {
+      type: Date,
+      required: [true, "Your date of birth is required."],
+    },
     email: {
       type: String,
-      required: [true, 'Email is required.'],
+      required: [true, "Email is required."],
       unique: true,
       lowercase: true,
       trim: true
     },
     password: {
       type: String,
-      required: [true, 'Password is required.']
+      required: [true, "Password is required."]
+    },
+    role: {
+      type: String,
+      enum: ["user", "event-planner"],
+      default: "user"
+    },
+    friends: {
+      type: [mongoose.Schema.Types.ObjectId],
+      ref: "User",
     }
   },
   {
@@ -21,6 +44,6 @@ const userSchema = new Schema(
   }
 );
 
-const User = model("User", userSchema);
+const User = mongoose.model("User", userSchema);
 
 module.exports = User;
