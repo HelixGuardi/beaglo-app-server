@@ -1,6 +1,7 @@
 const router = require("express").Router();
 
 const User = require("../models/User.model")
+const bcryptjs = require("bcryptjs")
 
 // POST "/api/auth/signup" => registrar el usuario
 router.post("/signup", async(req, res, next) => {
@@ -43,13 +44,16 @@ router.post("/signup", async(req, res, next) => {
 
     //* crear el usuario
     try {
+
+        // cifrar la contraseña
+        const encryptedPassword = await bcryptjs.hash(password, 12)
         
         await User.create({
             name: name,
             surname: surname,
             dateOfBirth: dateOfBirth,
             email: email,
-            password: password,
+            password: encryptedPassword,
         })
         res.sendStatus(201);
 
@@ -57,8 +61,6 @@ router.post("/signup", async(req, res, next) => {
         next(error)
     }
 
-
-    
 })
 
 // POST "/api/auth/login" => autenticación del usuario y envio del token
