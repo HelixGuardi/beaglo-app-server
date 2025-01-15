@@ -2,7 +2,8 @@ const router = require("express").Router();
 
 const User = require("../models/User.model")
 const bcryptjs = require("bcryptjs")
-const jwt = require("jsonwebtoken")
+const jwt = require("jsonwebtoken");
+const { verifyToken } = require("../middlewares/auth.middlewares");
 
 // POST "/api/auth/signup" => registrar el usuario
 router.post("/signup", async(req, res, next) => {
@@ -122,5 +123,13 @@ router.post("/login", async (req, res, next) => {
 })
 
 // GET "/api/auth/verify" => validación del token
+router.get("/verify", verifyToken, (req, res, next) => {
+
+    // Esta ruta solo se usa para verificar el token una vez cuando el usuario está navegando por primera vez por la web.
+    // Se usa para indicar al front que el usuario es valido y quien es ese usuario.
+
+    res.status(202).json({ payload: req.payload })
+
+})
 
 module.exports = router;

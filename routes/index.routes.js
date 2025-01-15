@@ -18,7 +18,6 @@ router.get("/private-route-example", verifyToken, (req, res) => {
   console.log(req.payload)
 
   res.send("envio de información privada o acción privada")
-
 })
 
 module.exports = router;
