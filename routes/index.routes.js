@@ -4,8 +4,19 @@ router.get("/", (req, res, next) => {
   res.json("All good in here");
 });
 
+
+const userRouter = require("./user.routes.js")
+router.use("/users", userRouter)
+
+const postRouter = require("./post.routes.js")
+router.use("/posts", postRouter)
+
+const commentRouter = require("./comment.routes.js")
+router.use("/comments", commentRouter)
+
 const authRouter = require("./auth.routes")
 router.use("/auth", authRouter)
+
 
 const { verifyToken } = require("../middlewares/auth.middlewares")
 
