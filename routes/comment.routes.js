@@ -4,7 +4,7 @@ const router = express.Router();
 const Comment = require("../models/Comment.model");
 
 // POST /api/comments/:postId -> crea un comentario en un post especifico //! Pendiente de testear en postman
-router.post("/:postId", async (req, res) => {
+router.post("/:postId", async (req, res, next) => {
   try {
     await Comment.create({
       content: req.body.content,
@@ -18,7 +18,7 @@ router.post("/:postId", async (req, res) => {
 });
 
 // GET /api/comments/:postId -> obtiene comentarios de un post especifico //! Pendiente de testear en postman
-router.get("/:postId", async (req, res) => {
+router.get("/:postId", async (req, res, next) => {
   try {
     //? Preguntar a Jorge
   } catch (error) {
@@ -27,7 +27,7 @@ router.get("/:postId", async (req, res) => {
 });
 
 // DELETE /api/comments/:commentId -> Elimina un comentario especifico //! Pendiente de testear en postman
-router.delete("/:commentId", async (req, res) => {
+router.delete("/:commentId", async (req, res, next) => {
   try {
     await Comment.findByIdAndDelete(req.params.commentId);
     res.sendStatus(202);

@@ -4,14 +4,26 @@ const router = express.Router();
 const Post = require("../models/Post.model.js");
 const { verifyToken } = require("../middlewares/auth.middlewares.js");
 
-// POST /api/posts -> crea un post desde el usuario logeado (necesario autenticación) //! Pendiente
-router.post("/own", verifyToken, async (req, res) => {
-    console.log(req.payload)
-    res.send("Todo fino amigo! Hora de crear un post nene xd")
+// POST /api/posts/create-post -> crea un post desde el usuario logeado (necesario autenticación)
+router.post("/create-post", verifyToken, async (req, res, next) => {
+    
+    try {
+        
+        await Post.create({
+            image: req.body.image,
+            description: req.body.description,
+            location: req.body.location,
+            userCreator: req.payload._id
+        })
+        res.sendStatus(201)
+
+    } catch (error) {
+        next(error)
+    }
 })
 
-// GET /api/posts -> obtiene todos los posts //! Pendiente de testear en postman
-router.get("/", async (req, res) => {
+// GET /api/posts -> obtiene todos los posts
+router.get("/", async (req, res, next) => {
   try {
     const response = await Post.find();
     res.status(200).json(response);
@@ -20,8 +32,8 @@ router.get("/", async (req, res) => {
 }
 });
 
-// GET /api/posts/:postId -> obtiene un post especifico //! Pendiente de testear en postman
-router.get("/:postId", async (req, res) => {
+// GET /api/posts/:postId -> obtiene un post especifico
+router.get("/:postId", async (req, res, next) => {
     try {
         const response = await Post.findById(req.params.postId);
         res.status(200).json(response);
@@ -30,8 +42,32 @@ router.get("/:postId", async (req, res) => {
     }
 });
 
-// PUT /api/posts/:postId -> edita el post del usuario logeado (necesario autenticación) //! Pendiente
+// PUT /api/posts/:postId -> edita el post del usuario logeado (necesario autenticación)
+router.patch("/:postId", verifyToken, async (req, res, next) => {
+    
+    try {
 
-// DELETE /api/posts/:postId -> elimina un post desde el usuario logeado (necesario autenticación) //! Pendiente
+        await Post.findByIdAndUpdate( req.params.postId, {
+            description: req.body.description
+        })
+        res.sendStatus(202)
+
+    } catch (error) {
+        next(error)
+    }
+})
+
+// DELETE /api/posts/:postId -> elimina un post desde el usuario logeado (necesario autenticación)
+router.delete("/:postId", verifyToken, async (req, res, next) => {
+
+    try {
+        
+        await Post.findByIdAndDelete( req.params.postId )
+        res.sendStatus(200)
+
+    } catch (error) {
+        next(error)
+    }
+})
 
 module.exports = router;

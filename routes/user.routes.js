@@ -4,7 +4,7 @@ const User = require("../models/User.model.js");
 const { verifyToken } = require("../middlewares/auth.middlewares.js");
 
 // GET /api/users/own -> obtiene el perfil del usuario logeado (necesario autenticación)
-router.get("/own", verifyToken, async (req, res) => {
+router.get("/own", verifyToken, async (req, res, next) => {
   try {
     const response = await User.findById(req.payload._id);
     res.status(200).json(response);
@@ -15,7 +15,7 @@ router.get("/own", verifyToken, async (req, res) => {
 
 
 // PUT /api/users/own/user-info -> edita el perfil del usuario logeado (necesario autenticación)
-router.patch("/own/user-info", verifyToken, async (req, res) => {
+router.patch("/own/user-info", verifyToken, async (req, res, next) => {
     
     try {
         
