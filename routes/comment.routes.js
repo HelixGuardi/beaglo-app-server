@@ -32,7 +32,7 @@ router.get("/posts/:postId", async (req, res, next) => {
   }
 });
 
-// DELETE /api/comments/:commentId -> Elimina un comentario especifico
+// DELETE /api/comments/:commentId -> Elimina un comentario especifico 
 router.delete("/:commentId", async (req, res, next) => {
   try {
     await Comment.findByIdAndDelete(req.params.commentId);
@@ -40,6 +40,6 @@ router.delete("/:commentId", async (req, res, next) => {
   } catch (error) {
     next(error);
   }
-});
+}); 
 
 module.exports = router;

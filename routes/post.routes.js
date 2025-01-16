@@ -32,6 +32,74 @@ router.get("/", async (req, res, next) => {
 }
 });
 
+// PATCH /api/posts/:postId/like -> dar like
+router.patch("/:postId/like", verifyToken, async (req, res, next) => {
+    
+    try {
+
+        await Post.findByIdAndUpdate( req.params.postId, {
+            $addToSet: {
+                likes: req.payload._id
+            }
+        })
+        res.sendStatus(200)
+
+    } catch (error) {
+        next(error)
+    }
+})
+
+// PATCH /api/posts/:postId/undo-like -> quitar like
+router.patch("/:postId/undo-like", verifyToken, async (req, res, next) => {
+
+    try {
+
+        await Post.findByIdAndUpdate( req.params.postId, {
+            $pull: {
+                likes: req.payload._id
+            }
+        })
+        res.sendStatus(200)
+
+    } catch (error) {
+        next(error)
+    }
+})
+
+// PATCH /api/posts/:postId/dislike -> dar dislike
+router.patch("/:postId/dislike", verifyToken, async (req, res, next) => {
+    
+    try {
+
+        await Post.findByIdAndUpdate( req.params.postId, {
+            $addToSet: {
+                dislikes: req.payload._id
+            }
+        })
+        res.sendStatus(200)
+
+    } catch (error) {
+        next(error)
+    }
+})
+
+// PATCH /api/posts/:postId/undo-dislike -> quitar dislike
+router.patch("/:postId/undo-dislike", verifyToken, async (req, res, next) => {
+
+    try {
+
+        await Post.findByIdAndUpdate( req.params.postId, {
+            $pull: {
+                dislikes: req.payload._id
+            }
+        })
+        res.sendStatus(200)
+
+    } catch (error) {
+        next(error)
+    }
+})
+
 // GET /api/posts/:postId -> obtiene un post especifico
 router.get("/:postId", async (req, res, next) => {
     try {
@@ -42,7 +110,7 @@ router.get("/:postId", async (req, res, next) => {
     }
 });
 
-// PUT /api/posts/:postId -> edita el post del usuario logeado (necesario autenticación)
+// PATCH /api/posts/:postId -> edita el post del usuario logeado (necesario autenticación)
 router.patch("/:postId", verifyToken, async (req, res, next) => {
     
     try {

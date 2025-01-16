@@ -11,11 +11,11 @@ router.get("/own", verifyToken, async (req, res, next) => {
   } catch (error) {
     next(error);
   }
-});
+}); 
 
 
-// PUT /api/users/own/user-info -> edita el perfil del usuario logeado (necesario autenticación)
-router.patch("/own/user-info", verifyToken, async (req, res, next) => {
+// PATCH /api/users/own/user-info -> edita el perfil del usuario logeado (necesario autenticación)
+router.patch("/own/user-info", verifyToken, async (req, res, next ) => {
     
     try {
         
