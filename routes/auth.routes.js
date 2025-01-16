@@ -10,11 +10,11 @@ router.post("/signup", async(req, res, next) => {
 
     // recibir la data del usuario
     console.log(req.body)
-    const { name, surname, dateOfBirth, email, password } = req.body
+    const { name, surname, username, dateOfBirth, email, password } = req.body
 
     //* validaciones
         // verificar que la data existe
-    if (!name || !surname || !dateOfBirth || !email || !password) {
+    if (!name || !surname || !username || !dateOfBirth || !email || !password) {
         res.status(400).json({errorMessage: "Nombre, Apellido, Email, Contraseña y Fecha de nascimiento son campos obligatorios. "})
         return // detener la ejecución de la ruta
     }
@@ -57,6 +57,7 @@ router.post("/signup", async(req, res, next) => {
         await User.create({
             name: name,
             surname: surname,
+            username: username,
             dateOfBirth: dateOfBirth,
             email: email,
             password: encryptedPassword,

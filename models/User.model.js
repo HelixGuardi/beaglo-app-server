@@ -13,6 +13,10 @@ const userSchema = new mongoose.Schema(
       required: [true, 'Surname is required.'],
       trim: true
     },
+    username: {
+      type: String,
+      required: [true, 'Username is required. Be creative!']
+    },
     dateOfBirth: {
       type: Date,
       required: [true, "Your date of birth is required."],
