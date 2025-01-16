@@ -14,8 +14,8 @@ router.get("/own", verifyToken, async (req, res) => {
 });
 
 
-// PUT /api/users/own -> edita el perfil del usuario logeado (necesario autenticación)
-router.put("/own", verifyToken, async (req, res) => {
+// PUT /api/users/own/user-info -> edita el perfil del usuario logeado (necesario autenticación)
+router.patch("/own/user-info", verifyToken, async (req, res) => {
     
     try {
         
