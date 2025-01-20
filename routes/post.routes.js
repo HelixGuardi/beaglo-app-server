@@ -25,7 +25,9 @@ router.post("/create-post", verifyToken, async (req, res, next) => {
 // GET /api/posts -> obtiene todos los posts
 router.get("/", async (req, res, next) => {
   try {
-    const response = await Post.find();
+    const response = await Post
+    .find()
+    .populate("userCreator", {username: 1, _id: 0})
     res.status(200).json(response);
 } catch (error) {
     next(error);
