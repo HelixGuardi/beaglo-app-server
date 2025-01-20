@@ -32,6 +32,18 @@ router.get("/", async (req, res, next) => {
 }
 });
 
+// GET /api/posts/own -> obtiene todos los posts del usuario loggeado
+router.get("/own", verifyToken, async (req, res, next) => {
+    try {
+
+        const response = await Post.find({ userCreator: req.payload._id })
+        res.status(200).json(response)
+
+    } catch(error) {
+        next(error)
+    }
+})
+
 // PATCH /api/posts/:postId/like -> dar like
 router.patch("/:postId/like", verifyToken, async (req, res, next) => {
     
@@ -109,6 +121,7 @@ router.get("/:postId", async (req, res, next) => {
         next(error);
     }
 });
+
 
 // PATCH /api/posts/:postId -> edita el post del usuario logeado (necesario autenticación)
 router.patch("/:postId", verifyToken, async (req, res, next) => {
