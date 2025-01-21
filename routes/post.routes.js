@@ -38,7 +38,9 @@ router.get("/", async (req, res, next) => {
 router.get("/own", verifyToken, async (req, res, next) => {
     try {
 
-        const response = await Post.find({ userCreator: req.payload._id })
+        const response = await Post
+        .find({ userCreator: req.payload._id })
+        .populate("userCreator", {username: 1, _id: 0})
         res.status(200).json(response)
 
     } catch(error) {
@@ -117,7 +119,10 @@ router.patch("/:postId/undo-dislike", verifyToken, async (req, res, next) => {
 // GET /api/posts/:postId -> obtiene un post especifico
 router.get("/:postId", async (req, res, next) => {
     try {
-        const response = await Post.findById(req.params.postId);
+        const response = await Post
+        .findById(req.params.postId)
+        .populate("userCreator")
+
         res.status(200).json(response);
     } catch (error) {
         next(error);

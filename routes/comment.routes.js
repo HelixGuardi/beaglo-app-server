@@ -24,7 +24,9 @@ router.post("/posts/:postId", verifyToken, async (req, res, next) => {
 router.get("/posts/:postId", async (req, res, next) => {
   try {
 
-    const response = await Comment.find({post: req.params.postId})
+    const response = await Comment
+    .find({post: req.params.postId})
+    .populate("user", {username: 1, _id: 0})
     res.status(200).json(response)
 
   } catch (error) {
