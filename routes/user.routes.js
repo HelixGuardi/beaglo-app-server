@@ -31,6 +31,22 @@ router.patch("/own/user-info", verifyToken, async (req, res, next ) => {
     }
 })
 
+// GET /api/users -> busca usuarios por nombre o nombre de usuario
+router.get("/", verifyToken, async (req, res, next) => {
+  try {
+    const searchQuery = req.query.query || ""; 
+    const users = await User.find({
+      $or: [
+        { username: { $regex: searchQuery, $options: "i" } }, 
+        { name: { $regex: searchQuery, $options: "i" } }
+      ]
+    });
+    res.status(200).json(users);
+  } catch (error) {
+    next(error);
+  }
+});
+
 
 // GET /api/users/:userId -> obtiene el perfil de un usuario especifico
 router.get("/:userId", async (req, res, next) => {

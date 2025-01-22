@@ -27,7 +27,7 @@ router.get("/", async (req, res, next) => {
   try {
     const response = await Post
     .find()
-    .populate("userCreator", {username: 1, _id: 0})
+    .populate("userCreator", {username: 1, _id: 1})
     res.status(200).json(response);
 } catch (error) {
     next(error);
@@ -40,13 +40,25 @@ router.get("/own", verifyToken, async (req, res, next) => {
 
         const response = await Post
         .find({ userCreator: req.payload._id })
-        .populate("userCreator", {username: 1, _id: 0})
+        .populate("userCreator", {username: 1, _id: 1})
         res.status(200).json(response)
 
     } catch(error) {
         next(error)
     }
 })
+
+// GET /api/posts/user/:userId -> obtiene todos los posts de un usuario específico
+router.get("/user/:userId", verifyToken, async (req, res, next) => {
+    try {
+        const userId = req.params.userId;
+        const posts = await Post.find({ userCreator: userId });
+
+        res.status(200).json(posts);
+    } catch (error) {
+        next(error);
+    }
+});
 
 // PATCH /api/posts/:postId/like -> dar like
 router.patch("/:postId/like", verifyToken, async (req, res, next) => {
@@ -134,6 +146,10 @@ router.get("/:postId", async (req, res, next) => {
 router.patch("/:postId", verifyToken, async (req, res, next) => {
     
     try {
+        const post = await Post.findById(req.params.postId)
+        if(post.userCreator._id.toString() !== req.payload._id.toString()) {
+            return res.status(403).json({message: 'Unauthorized action'})
+        }
 
         await Post.findByIdAndUpdate( req.params.postId, {
             description: req.body.description
@@ -149,6 +165,10 @@ router.patch("/:postId", verifyToken, async (req, res, next) => {
 router.delete("/:postId", verifyToken, async (req, res, next) => {
 
     try {
+        const post = await Post.findById(req.params.postId)
+        if(post.userCreator._id.toString() !== req.payload._id.toString()) {
+            return res.status(403).json({message: 'Unauthorized action'})
+        }
         
         await Post.findByIdAndDelete( req.params.postId )
         res.sendStatus(200)
