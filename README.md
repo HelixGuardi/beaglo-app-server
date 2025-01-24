@@ -1,5 +1,8 @@
 # Beaglo - Server Repository
 
+[![App Logo](./Logo-dark-removebg.png)](https://beaglo.netlify.app/)  
+**[¡Mira la App!](https://beaglo.netlify.app/)**
+
 ## Description
 Beaglo is a social network for travelers, providing a platform to share experiences, connect with other travelers, and plan trips collaboratively. This repository contains the backend implementation of Beaglo.
 
