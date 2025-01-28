@@ -32,6 +32,9 @@ const userSchema = new mongoose.Schema(
       type: String,
       required: [true, "Password is required."]
     },
+    profileImg: {
+      type: String
+    },
     role: {
       type: String,
       enum: ["user", "event-planner"],
