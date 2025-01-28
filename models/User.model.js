@@ -33,7 +33,8 @@ const userSchema = new mongoose.Schema(
       required: [true, "Password is required."]
     },
     profileImg: {
-      type: String
+      type: String,
+      default: "../profile-icon-degrade-blue-color.png"
     },
     role: {
       type: String,
