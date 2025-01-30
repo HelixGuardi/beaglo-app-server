@@ -17,6 +17,9 @@ router.use("/comments", commentRouter)
 const authRouter = require("./auth.routes")
 router.use("/auth", authRouter)
 
+const uploadRouter = require("./upload.routes.js")
+router.use("/upload", uploadRouter)
+
 
 const { verifyToken } = require("../middlewares/auth.middlewares")
 

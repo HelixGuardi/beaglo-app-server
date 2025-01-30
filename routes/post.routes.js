@@ -141,7 +141,6 @@ router.get("/:postId", async (req, res, next) => {
     }
 });
 
-
 // PATCH /api/posts/:postId -> edita el post del usuario logeado (necesario autenticación)
 router.patch("/:postId", verifyToken, async (req, res, next) => {
     
