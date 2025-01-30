@@ -27,7 +27,7 @@ router.get("/", async (req, res, next) => {
   try {
     const response = await Post
     .find()
-    .populate("userCreator", {username: 1, _id: 1})
+    .populate("userCreator", {username: 1, _id: 1, profileImg: 1})
     res.status(200).json(response);
 } catch (error) {
     next(error);
@@ -40,7 +40,7 @@ router.get("/own", verifyToken, async (req, res, next) => {
 
         const response = await Post
         .find({ userCreator: req.payload._id })
-        .populate("userCreator", {username: 1, _id: 1})
+        .populate("userCreator", {username: 1, _id: 1, profileImg: 1})
         res.status(200).json(response)
 
     } catch(error) {

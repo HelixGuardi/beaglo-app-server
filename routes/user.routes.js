@@ -22,7 +22,8 @@ router.patch("/own/user-info", verifyToken, async (req, res, next ) => {
         await User.findByIdAndUpdate( req.payload._id, {
             name: req.body.name,
             surname: req.body.surname,
-            username: req.body.username
+            username: req.body.username,
+            profileImg: req.body.profileImg
         })
         res.sendStatus(202)
 
