@@ -27,6 +27,7 @@ router.get("/", async (req, res, next) => {
   try {
     const response = await Post
     .find()
+    .sort({ createdAt: -1 })
     .populate("userCreator", {username: 1, _id: 1, profileImg: 1})
     res.status(200).json(response);
 } catch (error) {
