@@ -53,7 +53,9 @@ router.get("/own", verifyToken, async (req, res, next) => {
 router.get("/user/:userId", verifyToken, async (req, res, next) => {
     try {
         const userId = req.params.userId;
-        const posts = await Post.find({ userCreator: userId });
+        const posts = await Post
+        .find({ userCreator: userId })
+        .populate("userCreator", {username: 1, _id: 1, profileImg: 1})
 
         res.status(200).json(posts);
     } catch (error) {
